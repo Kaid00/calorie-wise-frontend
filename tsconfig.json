@@ -23,7 +23,7 @@
     //absolute import
     "baseUrl": "./src",
     "paths": {
-      "~/*": ["./*"]
+      "@/*": ["./*"]
     }
   },
   "include": ["src"],
