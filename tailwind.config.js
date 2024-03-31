@@ -10,6 +10,13 @@ export default {
     extend: {
       fontFamily: {
         Poppins: ["Poppins", ...defaultTheme.fontFamily.sans],
+        Montserrat: ["Montserrat", ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        chaletGreen: "#4d6333",
+        lightGreen: "#F3F4EE",
+        springWood: "#f4f0e7",
+        orangeRoughy: "#d95717",
       },
     },
   },
