@@ -15,7 +15,9 @@
     "@tanstack/router-devtools": "^1.26.1",
     "axios": "^1.6.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-select": "^5.8.0",
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@tanstack/router-vite-plugin": "^1.24.1",

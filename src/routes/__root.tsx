@@ -1,6 +1,11 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  Outlet,
+  useRouterState,
+} from "@tanstack/react-router";
 import React, { Suspense } from "react";
 import Navbar from "../components/layout/Navbar";
+import { twMerge } from "tailwind-merge";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -15,8 +20,18 @@ const TanStackRouterDevtools =
       );
 
 export const Route = createRootRoute({
-  component: () => (
-    <main className="bg-lightGreen min-h-screen">
+  component: App,
+});
+
+function App() {
+  const router = useRouterState();
+  return (
+    <main
+      className={twMerge(
+        "bg-white min-h-screen",
+        router.location.pathname === "/" && "bg-lightGreen"
+      )}
+    >
       <div>
         <Navbar />
       </div>
@@ -27,5 +42,5 @@ export const Route = createRootRoute({
         <TanStackRouterDevtools />
       </Suspense>
     </main>
-  ),
-});
+  );
+}
