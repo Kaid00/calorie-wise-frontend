@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import Button from "../ui/Button";
+import Logo from "@/assets/logo.png";
 
 function Navbar() {
   return (
     <nav className=" p-3">
       <div className="max-w-6xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <Link to="/">
+        <Link to="/" className="flex space-x-2 items-center ">
+          <img src={Logo} alt="logo" className="size-[40px] mb-3" />
           <h2 className="text-orangeRoughy font-bold font-Montserrat">
             Calorie wise
           </h2>
