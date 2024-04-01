@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import { Link, createLazyFileRoute } from "@tanstack/react-router";
+import foodImage from "@/assets/food.png";
 
 export const Route = createLazyFileRoute("/")({
   component: Landing,
@@ -29,7 +30,11 @@ function Landing() {
             </Link>
           </div>
         </div>
-        <div className="w-1/2"></div>
+        <div className="w-1/2 flex justify-center">
+          <div>
+            <img src={foodImage} />
+          </div>
+        </div>
       </div>
     </div>
   );
