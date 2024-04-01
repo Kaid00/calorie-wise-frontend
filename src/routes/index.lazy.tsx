@@ -12,7 +12,7 @@ function Landing() {
       <div className="p-5 flex">
         <div className="text-chaletGreen  w-[50%]">
           <h1 className=" font-bold text-5xl">Get A Customised</h1>
-          <h1 className="text-orangeRoughy font-Montserrat font-extrabold text-8xl my-5">
+          <h1 className="text-orangeRoughy font-Montserrat font-extrabold text-7xl my-3">
             Diet Plan
           </h1>
           <p className=" text-lg">
