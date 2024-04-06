@@ -6,6 +6,7 @@ import {
 import React, { Suspense } from "react";
 import Navbar from "../components/layout/Navbar";
 import { twMerge } from "tailwind-merge";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -25,22 +26,25 @@ export const Route = createRootRoute({
 
 function App() {
   const router = useRouterState();
+  const queryClient = new QueryClient();
   return (
-    <main
-      className={twMerge(
-        "bg-white min-h-screen",
-        router.location.pathname === "/" && "bg-lightGreen"
-      )}
-    >
-      <div>
-        <Navbar />
-      </div>
-      <section className="container mx-auto px-6 ">
-        <Outlet />
-      </section>
-      <Suspense>
-        <TanStackRouterDevtools />
-      </Suspense>
-    </main>
+    <QueryClientProvider client={queryClient}>
+      <main
+        className={twMerge(
+          "bg-white min-h-screen",
+          router.location.pathname === "/" && "bg-lightGreen"
+        )}
+      >
+        <div>
+          <Navbar />
+        </div>
+        <section className="container mx-auto px-6 ">
+          <Outlet />
+        </section>
+        <Suspense>
+          <TanStackRouterDevtools />
+        </Suspense>
+      </main>
+    </QueryClientProvider>
   );
 }
