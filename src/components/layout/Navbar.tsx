@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import Button from "../ui/Button";
 import Logo from "@/assets/logo.png";
+import { useSupabaseSession } from "@/hooks";
 
 function Navbar() {
+  const session = useSupabaseSession();
+
   return (
     <nav className=" p-3">
       <div className="max-w-6xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -44,18 +47,24 @@ function Navbar() {
             >
               Calorie
             </Link>
-            <Link
-              to="/dietPlan"
-              className="[&.active]:font-bold [&.active]:text-orangeRoughy"
-            >
-              Diet plan
-            </Link>
+            {session && (
+              <Link
+                to="/dietPlan"
+                className="[&.active]:font-bold [&.active]:text-orangeRoughy"
+              >
+                Diet plan
+              </Link>
+            )}
           </ul>
         </div>
         <div>
-          <Button className="rounded-3xl text-sm ring-1 py-2 px-4 ring-orangeRoughy bg-white text-orangeRoughy shadow-lg hover:bg-orangeRoughy hover:text-white">
-            Login/Signup
-          </Button>
+          {!session ? (
+            <Button className="rounded-3xl text-sm ring-1 py-2 px-4 ring-orangeRoughy bg-white text-orangeRoughy shadow-lg hover:bg-orangeRoughy hover:text-white">
+              Login/Signup
+            </Button>
+          ) : (
+            <h5>{session?.user?.email}</h5>
+          )}
         </div>
       </div>
     </nav>

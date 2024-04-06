@@ -33,9 +33,10 @@ const renderIcon = (calorieKey: string) => {
 type CardProps = {
   calorieKey: string;
   calorieCount: number;
+  calculateMealPlan: (calories: number) => void;
 };
 
-function Card({ calorieCount, calorieKey }: CardProps) {
+function Card({ calorieCount, calorieKey, calculateMealPlan }: CardProps) {
   return (
     <div className=" border rounded-md shadow-md p-4">
       <div className=" mb-1 flex justify-center  p-4 text-orangeRoughy">
@@ -48,7 +49,10 @@ function Card({ calorieCount, calorieKey }: CardProps) {
         <h4>{calorieCount} calories</h4>
       </div>
       <div className="my-3">
-        <Button className=" py-2 text-sm px-4 font-semibold shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed">
+        <Button
+          className=" py-2 text-sm px-4 font-semibold shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed"
+          onClick={() => calculateMealPlan(calorieCount)}
+        >
           Calculate diet plan
         </Button>
       </div>

@@ -2,11 +2,19 @@
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import DropdownSelect from "@/components/ui/DropdownSelect";
-import { fetchCalories } from "@/services";
-import { CalorieRequestData, CalorieResponse, SelectOption } from "@/types";
+import { fetchCalories, fetchMealPLan } from "@/services";
+import {
+  CalorieRequestData,
+  CalorieResponse,
+  MealPlanResponse,
+  SelectOption,
+} from "@/types";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Dialog } from "@headlessui/react";
+import Login from "@/components/Login";
+import { IoMdClose } from "react-icons/io";
 
 export const Route = createLazyFileRoute("/calorie")({
   component: Calorie,
@@ -43,6 +51,8 @@ function Calorie() {
   const [calorieData, setCalorieData] = useState<CalorieRequestData>(
     initialCalorieRequestData
   );
+  const [isOpen, setIsOpen] = useState(false);
+  const [mealPlan, setMealPlan] = useState<MealPlanResponse | null>(null);
   const [isDataValid, setIsDataValid] = useState(false);
   const [calorieResponse, SetCalorieResponse] =
     useState<CalorieResponse | null>({
@@ -73,8 +83,6 @@ function Calorie() {
     ([key, value]) => ({ key, value })
   );
 
-  console.log(calorieResponseArray);
-
   useEffect(() => {
     if (
       calorieData.age > 0 &&
@@ -91,6 +99,10 @@ function Calorie() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CalorieRequestData) => fetchCalories(data),
+  });
+
+  const { mutate: getMealPlan, isPending: isLoadingMealPlan } = useMutation({
+    mutationFn: (calories: number) => fetchMealPLan(calories),
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,6 +135,18 @@ function Calorie() {
       },
     });
   };
+
+  const calculateMealPlan = (calories: number) => {
+    // getMealPlan(calories, {
+    //   onSuccess(data) {
+    //     alert("successfully fetched meal plan");
+    //     setMealPlan(data);
+    //     console.log(data);
+    //   },
+    // });
+    setIsOpen(true);
+  };
+
   return (
     <section className="my-6 p-6">
       <h1 className="text-center font-bold text-chaletGreen ">
@@ -207,12 +231,40 @@ function Calorie() {
       <hr className="border my-3 border-gray-300" />
       <div className="p-6 text-center flex flex-col">
         <h1 className="font-bold text-chaletGreen">Your Results</h1>
-        <div className="container mx-auto grid grid-cols-4 gap-3  py-4">
-          {calorieResponseArray.map((goal, key) => (
-            <Card key={key} calorieCount={goal.value} calorieKey={goal.key} />
-          ))}
-        </div>
+        {isLoadingMealPlan ? (
+          <div>
+            <h1>loading meal plan</h1>
+          </div>
+        ) : (
+          <div className="container mx-auto grid grid-cols-4 gap-3  py-4">
+            {calorieResponseArray.map((goal, key) => (
+              <Card
+                key={key}
+                calorieCount={goal.value}
+                calorieKey={goal.key}
+                calculateMealPlan={(calories: number) =>
+                  calculateMealPlan(calories)
+                }
+              />
+            ))}
+          </div>
+        )}
       </div>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="z-30 absolute top-0 w-full h-full flex bg-black bg-opacity-50"
+      >
+        <Dialog.Panel className="w-[400px] mx-auto my-auto bg-white p-5 rounded-md border shadow-md relative">
+          <Login closeMOdal={() => setIsOpen(false)} />
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-2 right-2"
+          >
+            <IoMdClose />
+          </button>
+        </Dialog.Panel>
+      </Dialog>
     </section>
   );
 }

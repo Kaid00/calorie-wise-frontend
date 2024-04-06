@@ -3,6 +3,27 @@ export type SelectOption = {
   label: string;
 };
 
+interface Meal {
+  readyInMinutes: number;
+  sourceUrl: string;
+  servings: number;
+  id: number;
+  title: string;
+  imageType: string;
+}
+
+interface Nutrients {
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  protein: number;
+}
+
+export interface MealPlanResponse {
+  meals: Meal[];
+  nutrients: Nutrients;
+}
+
 export enum CalorieResponseKeys {
   Maintenance = "maintenance",
   MildWeightLoss = "mildWeightLoss",
