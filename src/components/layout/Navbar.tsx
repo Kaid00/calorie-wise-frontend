@@ -2,9 +2,15 @@ import { Link } from "@tanstack/react-router";
 import Button from "../ui/Button";
 import Logo from "@/assets/logo.png";
 import { useSupabaseSession } from "@/hooks";
+import ProfileDropdown from "../ui/profileDropdown";
+import { Dialog } from "@headlessui/react";
+import Login from "../Login";
+import { IoMdClose } from "react-icons/io";
+import { useState } from "react";
 
 function Navbar() {
   const session = useSupabaseSession();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className=" p-3">
@@ -59,14 +65,32 @@ function Navbar() {
         </div>
         <div>
           {!session ? (
-            <Button className="rounded-3xl text-sm ring-1 py-2 px-4 ring-orangeRoughy bg-white text-orangeRoughy shadow-lg hover:bg-orangeRoughy hover:text-white">
+            <Button
+              className="rounded-3xl text-sm ring-1 py-2 px-4 ring-orangeRoughy bg-white text-orangeRoughy shadow-lg hover:bg-orangeRoughy hover:text-white"
+              onClick={() => setIsOpen(true)}
+            >
               Login/Signup
             </Button>
           ) : (
-            <h5>{session?.user?.email}</h5>
+            <ProfileDropdown />
           )}
         </div>
       </div>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="z-30 absolute top-0 w-full h-full flex bg-black bg-opacity-50"
+      >
+        <Dialog.Panel className="w-[400px] mx-auto my-auto bg-white p-5 rounded-md border shadow-md relative">
+          <Login closeMOdal={() => setIsOpen(false)} />
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-2 right-2"
+          >
+            <IoMdClose />
+          </button>
+        </Dialog.Panel>
+      </Dialog>
     </nav>
   );
 }

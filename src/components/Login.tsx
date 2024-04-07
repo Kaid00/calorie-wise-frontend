@@ -4,13 +4,12 @@ import { supabase } from "@/constant";
 import { useSupabaseSession } from "@/hooks";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type LoginProps = {
   closeMOdal: () => void;
 };
 export default function Login({ closeMOdal }: LoginProps) {
-  const [isLogginOut, setIsLoggingOut] = useState(false);
   const session = useSupabaseSession();
 
   useEffect(() => {
@@ -18,12 +17,6 @@ export default function Login({ closeMOdal }: LoginProps) {
       closeMOdal();
     }
   }, [session]);
-
-  async function signOut() {
-    setIsLoggingOut(true);
-    const { error } = await supabase.auth.signOut();
-    setIsLoggingOut(false);
-  }
 
   if (!session) {
     return (
@@ -41,10 +34,6 @@ export default function Login({ closeMOdal }: LoginProps) {
       />
     );
   } else {
-    return (
-      <button onClick={signOut} disabled={isLogginOut}>
-        {isLogginOut ? "Logging out..." : "Log out"}
-      </button>
-    );
+    return <div>Logged in</div>;
   }
 }
