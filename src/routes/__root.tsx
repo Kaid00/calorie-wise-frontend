@@ -7,6 +7,8 @@ import React, { Suspense } from "react";
 import Navbar from "../components/layout/Navbar";
 import { twMerge } from "tailwind-merge";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ModalProvider from "@/context";
+import Modal from "@/components/Modal";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -29,22 +31,25 @@ function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <main
-        className={twMerge(
-          "bg-white min-h-screen",
-          router.location.pathname === "/" && "bg-lightGreen"
-        )}
-      >
-        <div>
-          <Navbar />
-        </div>
-        <section className="container mx-auto px-6 ">
-          <Outlet />
-        </section>
-        <Suspense>
-          <TanStackRouterDevtools />
-        </Suspense>
-      </main>
+      <ModalProvider>
+        <main
+          className={twMerge(
+            "bg-white min-h-screen",
+            router.location.pathname === "/" && "bg-lightGreen"
+          )}
+        >
+          <div>
+            <Navbar />
+          </div>
+          <section className="container mx-auto px-6 ">
+            <Outlet />
+          </section>
+          <Suspense>
+            <TanStackRouterDevtools />
+          </Suspense>
+        </main>
+        <Modal />
+      </ModalProvider>
     </QueryClientProvider>
   );
 }
