@@ -9,7 +9,7 @@ import {
   MealPlanResponse,
   SelectOption,
 } from "@/types";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "@/context";
@@ -103,11 +103,24 @@ function Calorie() {
     mutationFn: (data: CalorieRequestData) => fetchCalories(data),
   });
 
+  const navigate = useNavigate();
+
   const { openModal, closeModal } = useContext(ModalContext);
 
+  const ShowSavedMealPLans = () => {
+    closeModal();
+    navigate({ to: "/dietPlan" });
+  };
+
   const openLoginModal = () => openModal(<Login closeMOdal={closeModal} />);
-  const openMealPLanModal = (calories: number) =>
-    openModal(<MealPlan calories={calories} />);
+  const openMealPLanModal = (calories: number, text: string) =>
+    openModal(
+      <MealPlan
+        calories={calories}
+        target={text}
+        navigate={ShowSavedMealPLans}
+      />
+    );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -140,9 +153,9 @@ function Calorie() {
     });
   };
 
-  const calculateMealPlan = (calories: number) => {
+  const calculateMealPlan = (calories: number, text: string) => {
     if (session) {
-      openMealPLanModal(calories);
+      openMealPLanModal(calories, text);
     } else {
       openLoginModal();
     }
@@ -238,8 +251,8 @@ function Calorie() {
               key={key}
               calorieCount={goal.value}
               calorieKey={goal.key}
-              calculateMealPlan={(calories: number) =>
-                calculateMealPlan(calories)
+              calculateMealPlan={(calories: number, text: string) =>
+                calculateMealPlan(calories, text)
               }
             />
           ))}

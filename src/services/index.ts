@@ -1,3 +1,4 @@
+import { supabase } from "@/constant";
 import { CalorieRequestData, CalorieResponse, MealPlanResponse } from "@/types";
 import axios from "axios";
 
@@ -19,4 +20,42 @@ export const fetchMealPLan = async (calories: number) => {
     { headers }
   );
   return response.data;
+};
+
+export async function createMealPlan(
+  userId: string,
+  title: string,
+  plan: object | undefined
+) {
+  try {
+    const { data, error } = await supabase
+      .from("meal_plans")
+      .insert({
+        title: title,
+        user_id: userId,
+        plans: plan,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    alert(error?.message);
+  }
+}
+
+export const getMealPlans = async (userId: string) => {
+  const { data, error } = await supabase
+    .from("meal_plans")
+    .select("*")
+    .eq("user_id", userId) // Filter for current user's plans
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching meal plans:", error);
+    return [];
+  }
+
+  return data;
 };

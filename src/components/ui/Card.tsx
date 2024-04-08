@@ -33,7 +33,7 @@ const renderIcon = (calorieKey: string) => {
 type CardProps = {
   calorieKey: string;
   calorieCount: number;
-  calculateMealPlan: (calories: number) => void;
+  calculateMealPlan: (calories: number, text: string) => void;
 };
 
 function Card({ calorieCount, calorieKey, calculateMealPlan }: CardProps) {
@@ -51,7 +51,9 @@ function Card({ calorieCount, calorieKey, calculateMealPlan }: CardProps) {
       <div className="my-3">
         <Button
           className=" py-2 text-sm px-4 font-semibold shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed"
-          onClick={() => calculateMealPlan(calorieCount)}
+          onClick={() =>
+            calculateMealPlan(calorieCount, formatEnumKey(calorieKey ?? ""))
+          }
         >
           Calculate diet plan
         </Button>

@@ -1,14 +1,18 @@
-import { fetchMealPLan } from "@/services";
+import { createMealPlan, fetchMealPLan } from "@/services";
 import { MealPlanResponse } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Logo from "@/assets/logo.png";
 import Button from "./Button";
+import { useSupabaseSession } from "@/hooks";
 
 type MealPlanProps = {
   calories: number;
+  target: string;
+  navigate: () => void;
 };
-function MealPlan({ calories }: MealPlanProps) {
+function MealPlan({ calories, target, navigate }: MealPlanProps) {
+  const [isSavingPLan, setIsSavingPLan] = useState(false);
   const { mutate, isPending, data } = useMutation({
     mutationFn: (data: number) => fetchMealPLan(data),
   });
@@ -19,6 +23,16 @@ function MealPlan({ calories }: MealPlanProps) {
       },
     });
   }, []);
+
+  const session = useSupabaseSession();
+
+  const saveMealPlan = async () => {
+    setIsSavingPLan(true);
+    const mealPlan = createMealPlan(session?.user?.id, target, data?.meals);
+    console.log(mealPlan);
+    setIsSavingPLan(false);
+    navigate();
+  };
 
   return (
     <div className="p-4 ">
@@ -70,8 +84,12 @@ function MealPlan({ calories }: MealPlanProps) {
             </p>
           </div>
           <div className=" flex my-6">
-            <Button className="rounded-full  py-3 font-semibold px-6 shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed">
-              Save Meal plan
+            <Button
+              className="rounded-full  py-3 font-semibold px-6 shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed"
+              disabled={isSavingPLan}
+              onClick={saveMealPlan}
+            >
+              {isSavingPLan ? "Saving..." : "Save Meal plan"}
             </Button>
           </div>
         </div>
