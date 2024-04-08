@@ -10,8 +10,9 @@ type MealPlanProps = {
   calories: number;
   target: string;
   navigate: () => void;
+  sendToEmail: (data: MealPlanResponse) => void;
 };
-function MealPlan({ calories, target, navigate }: MealPlanProps) {
+function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
   const [isSavingPLan, setIsSavingPLan] = useState(false);
   const { mutate, isPending, data } = useMutation({
     mutationFn: (data: number) => fetchMealPLan(data),
@@ -57,6 +58,9 @@ function MealPlan({ calories, target, navigate }: MealPlanProps) {
                 <span className="font-semibold mx-3">Serving:</span>
                 {meal.servings}
               </p>
+              <a className="text-blue-600 font-semibold" href={meal.sourceUrl}>
+                view meal details
+              </a>
             </div>
           ))}
           <div className="flex  text-sm justify-center space-x-3">
@@ -83,13 +87,19 @@ function MealPlan({ calories, target, navigate }: MealPlanProps) {
               <span>:{data?.nutrients?.protein}</span>
             </p>
           </div>
-          <div className=" flex my-6">
+          <div className=" flex my-6 justify-center space-x-3">
             <Button
-              className="rounded-full  py-3 font-semibold px-6 shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  mx-auto disabled:bg-gray-600 disabled:cursor-not-allowed"
+              className="rounded-full  py-3 font-semibold px-6 shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  disabled:bg-gray-600 disabled:cursor-not-allowed"
               disabled={isSavingPLan}
               onClick={saveMealPlan}
             >
               {isSavingPLan ? "Saving..." : "Save Meal plan"}
+            </Button>
+            <Button
+              className="rounded-full  py-3 font-semibold px-6 shadow-lg border border-orangeRoughy text-orangeRoughy"
+              onClick={() => sendToEmail(data)}
+            >
+              Send to email
             </Button>
           </div>
         </div>

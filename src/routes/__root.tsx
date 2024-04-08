@@ -9,6 +9,8 @@ import { twMerge } from "tailwind-merge";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ModalProvider from "@/context";
 import Modal from "@/components/Modal";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -32,6 +34,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ModalProvider>
+        <ToastContainer />
         <main
           className={twMerge(
             "bg-white min-h-screen",

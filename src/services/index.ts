@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { supabase } from "@/constant";
-import { CalorieRequestData, CalorieResponse, MealPlanResponse } from "@/types";
+import {
+  CalorieRequestData,
+  CalorieResponse,
+  MealPlanResponse,
+  SendMealPlanRequest,
+} from "@/types";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 const headers = {
@@ -18,6 +25,14 @@ export const fetchMealPLan = async (calories: number) => {
   const response = await axios.get<MealPlanResponse>(
     `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/mealplans/generate?timeFrame=day&targetCalories=${calories}`,
     { headers }
+  );
+  return response.data;
+};
+
+export const sendMealPLan = async (mealPlan: SendMealPlanRequest) => {
+  const response = await axios.post<any>(
+    `https://9w9hrve1k6.execute-api.us-east-1.amazonaws.com/PDFGen/product`,
+    mealPlan
   );
   return response.data;
 };
@@ -43,7 +58,7 @@ export async function createMealPlan(
     }
     return data;
   } catch (error) {
-    alert(error?.message);
+    toast.error("Failed to add meal");
   }
 }
 
@@ -55,7 +70,7 @@ export const getMealPlans = async (userId: string) => {
     .order("id", { ascending: true });
 
   if (error) {
-    alert("Error fetching meal plans:");
+    toast.error("Error fetching meal");
     return [];
   }
 

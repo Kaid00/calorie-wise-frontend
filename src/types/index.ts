@@ -71,3 +71,9 @@ export interface CalorieResponse {
   status: string;
   data: Data;
 }
+
+export interface SendMealPlanRequest {
+  emailid: string;
+  meals: Meal[] | undefined;
+  nutrients: Nutrients | undefined;
+}

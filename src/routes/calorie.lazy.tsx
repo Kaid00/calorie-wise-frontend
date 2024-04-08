@@ -17,6 +17,7 @@ import { ModalContext } from "@/context";
 import Login from "@/components/Login";
 import MealPlan from "@/components/ui/MealPlan";
 import { useSupabaseSession } from "@/hooks";
+import SendMealPlan from "@/components/SendMealPlan";
 
 export const Route = createLazyFileRoute("/calorie")({
   component: Calorie,
@@ -107,9 +108,17 @@ function Calorie() {
 
   const { openModal, closeModal } = useContext(ModalContext);
 
+  const openSendEmailModal = (data: MealPlanResponse) =>
+    openModal(<SendMealPlan mealPLan={data} />);
+
   const ShowSavedMealPLans = () => {
     closeModal();
     navigate({ to: "/dietPlan" });
+  };
+
+  const showSendEmailModal = (mealPlan: MealPlanResponse) => {
+    closeModal();
+    openSendEmailModal(mealPlan);
   };
 
   const openLoginModal = () => openModal(<Login closeMOdal={closeModal} />);
@@ -119,6 +128,7 @@ function Calorie() {
         calories={calories}
         target={text}
         navigate={ShowSavedMealPLans}
+        sendToEmail={showSendEmailModal}
       />
     );
 
