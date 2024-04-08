@@ -38,7 +38,9 @@ export async function createMealPlan(
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      alert(error);
+    }
     return data;
   } catch (error) {
     alert(error?.message);
@@ -53,7 +55,7 @@ export const getMealPlans = async (userId: string) => {
     .order("id", { ascending: true });
 
   if (error) {
-    console.error("Error fetching meal plans:", error);
+    alert("Error fetching meal plans:");
     return [];
   }
 

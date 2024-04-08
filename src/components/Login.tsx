@@ -30,7 +30,7 @@ export default function Login({ closeMOdal }: LoginProps) {
           },
           theme: ThemeSupa,
         }}
-        providers={[]}
+        providers={["google"]}
       />
     );
   } else {
