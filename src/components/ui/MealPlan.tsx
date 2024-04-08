@@ -36,7 +36,7 @@ function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
   };
 
   return (
-    <div className="p-4 ">
+    <div className="p-4 overflow-y-auto h-auto max-h-[80vh]">
       {isPending && (
         <div className="flex flex-col text-center">
           <img src={Logo} alt="logo" className="size-[60px] mb-3 mx-auto" />
@@ -50,9 +50,15 @@ function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
           </h3>
           {data?.meals.map((meal, index) => (
             <div
-              className="border rounded-md shadow-md text-center p-4 space-y-4"
+              className="border rounded-md shadow-md text-center p-4 flex flex-col"
               key={index}
             >
+              <div className="mx-auto rounded-full">
+                <img
+                  className="w-full "
+                  src={`https://img.spoonacular.com/recipes/${meal.id}-556x370.jpg`}
+                />
+              </div>
               <h4 className="font-semibold">{meal.title}</h4>
               <p>
                 <span className="font-semibold mx-3">Serving:</span>
