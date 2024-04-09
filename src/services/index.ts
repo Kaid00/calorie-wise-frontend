@@ -4,6 +4,7 @@ import {
   CalorieRequestData,
   CalorieResponse,
   MealPlanResponse,
+  RandomPasswordResponse,
   SendMealPlanRequest,
 } from "@/types";
 import axios from "axios";
@@ -75,4 +76,11 @@ export const getMealPlans = async (userId: string) => {
   }
 
   return data;
+};
+
+export const fetchRandomPassword = async () => {
+  const response = await axios.get<RandomPasswordResponse>(
+    `https://8zm9fucasd.execute-api.us-east-1.amazonaws.com/prod/passwordgenerator?number=on&special=on&upper=off&length=10&repeat=1`
+  );
+  return response.data;
 };

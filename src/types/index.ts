@@ -77,3 +77,8 @@ export interface SendMealPlanRequest {
   meals: Meal[] | undefined;
   nutrients: Nutrients | undefined;
 }
+
+export interface RandomPasswordResponse {
+  status: string;
+  password: string;
+}
