@@ -6,6 +6,7 @@ import { fetchCalories, fetchMealPLan } from "@/services";
 import {
   CalorieRequestData,
   CalorieResponse,
+  Goals,
   MealPlanResponse,
   SelectOption,
 } from "@/types";
@@ -54,6 +55,10 @@ function Calorie() {
   const [calorieData, setCalorieData] = useState<CalorieRequestData>(
     initialCalorieRequestData
   );
+  const [goals, setGoals] = useState<Goals | null>(null);
+  const [goalsOptions, setGoalOptions] = useState<
+    { key: string; value: any }[] | null
+  >(null);
 
   const session = useSupabaseSession();
   const [isDataValid, setIsDataValid] = useState(false);
@@ -82,9 +87,6 @@ function Calorie() {
     });
 
   // Convert goals object to array of objects with key-value pairs
-  const calorieResponseArray = Object.entries(calorieResponse?.data.goals).map(
-    ([key, value]) => ({ key, value })
-  );
 
   useEffect(() => {
     if (
@@ -98,7 +100,13 @@ function Calorie() {
     } else {
       setIsDataValid(false);
     }
-  }, [calorieData]);
+    if (goals) {
+      const calorieResponseArray = Object?.entries(goals).map(
+        ([key, value]) => ({ key, value })
+      );
+      setGoalOptions(calorieResponseArray);
+    }
+  }, [calorieData, goals]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: (data: CalorieRequestData) => fetchCalories(data),
@@ -155,10 +163,14 @@ function Calorie() {
   };
 
   const handleSubmit = () => {
-    console.log(calorieData);
     mutate(calorieData, {
       onSuccess(data) {
-        console.log(data);
+        setGoals(data?.data.goals);
+        const element = document.getElementById("results");
+        if (element) {
+          // 👇 Will scroll smoothly to the top of the next section
+          element.scrollIntoView({ behavior: "smooth" });
+        }
       },
     });
   };
@@ -255,8 +267,11 @@ function Calorie() {
       <hr className="border my-3 border-gray-300" />
       <div className="p-6 text-center flex flex-col">
         <h1 className="font-bold text-chaletGreen">Your Results</h1>
-        <div className="container mx-auto grid grid-cols-4 gap-3  py-4">
-          {calorieResponseArray.map((goal, key) => (
+        <div
+          className="container mx-auto grid grid-cols-4 gap-3  py-4"
+          id="results"
+        >
+          {goalsOptions?.map((goal, key) => (
             <Card
               key={key}
               calorieCount={goal.value}

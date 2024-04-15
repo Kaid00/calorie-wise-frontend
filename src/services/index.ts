@@ -19,7 +19,7 @@ export const fetchCalories = async (data: CalorieRequestData) => {
   const response = await axios.get<CalorieResponse>(
     `https://2txlllvvm7.execute-api.us-east-1.amazonaws.com/prod/dailycalorie?age=${data.age}&height=${data.height}&gender=${data.gender}&activitylevel=${data.activityLevel}&weightunit=${data?.weightUnit}&weight=${data.weight}`
   );
-  return response;
+  return response.data;
 };
 
 export const fetchMealPLan = async (calories: number) => {

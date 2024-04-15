@@ -34,7 +34,7 @@ export enum CalorieResponseKeys {
   ExtremeWeightGain = "extremeWeightGain",
 }
 
-interface Goals {
+export interface Goals {
   maintenance: number;
   mildWeightLoss: number;
   weightLoss: number;
