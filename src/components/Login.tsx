@@ -56,6 +56,9 @@ export default function Login({ closeMOdal }: LoginProps) {
         emailRedirectTo: "http://localhost:5173",
       },
     });
+    if (data.user) {
+      toast.success("Signup successfull, verify email");
+    }
     if (error) {
       toast.error(error.message);
     }
@@ -77,7 +80,6 @@ export default function Login({ closeMOdal }: LoginProps) {
   const handleGenerateRandomPassword = () => {
     mutate(null, {
       onSuccess: (data) => {
-        alert(data?.password);
         setPassword(data?.password);
       },
       onError: (error) => {
