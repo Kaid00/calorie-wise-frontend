@@ -10,9 +10,9 @@ const Modal = () => {
     <Dialog
       open={isOpen}
       onClose={closeModal}
-      className="z-30 absolute top-0 w-full h-full flex bg-black bg-opacity-50"
+      className="z-30 absolute top-0 w-[100vw] h-[100vh] flex bg-black bg-opacity-50"
     >
-      <Dialog.Panel className="w-[40vw] mx-auto my-auto bg-white p-5 rounded-md border shadow-md relative">
+      <Dialog.Panel className="w-[60vw] mx-auto my-auto bg-white p-5 rounded-md border shadow-md relative">
         {modalContent}
         <button onClick={closeModal} className="absolute top-2 right-2">
           <IoMdClose />
