@@ -24,6 +24,16 @@ export interface MealPlanResponse {
   nutrients: Nutrients;
 }
 
+export interface EstimatedDayRequest {
+  current_weight: number;
+  target_weight: number;
+  diet_calories: number;
+}
+
+export interface EstimateDayResponse {
+  estimated_days: number;
+}
+
 export enum CalorieResponseKeys {
   Maintenance = "maintenance",
   MildWeightLoss = "mildWeightLoss",

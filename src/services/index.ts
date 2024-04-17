@@ -3,6 +3,8 @@ import { supabase } from "@/constant";
 import {
   CalorieRequestData,
   CalorieResponse,
+  EstimateDayResponse,
+  EstimatedDayRequest,
   MealPlanResponse,
   RandomPasswordResponse,
   SendMealPlanRequest,
@@ -10,7 +12,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const apiKey =  "4d0ae129c9msh83a023f8bcf40c6p1156bfjsneb131d0539aa" //import.meta.env.VITE_API_KEY;
+const apiKey = "4d0ae129c9msh83a023f8bcf40c6p1156bfjsneb131d0539aa"; //import.meta.env.VITE_API_KEY;
 const headers = {
   "X-RapidAPI-Key": apiKey,
   "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
@@ -30,6 +32,15 @@ export const fetchMealPLan = async (calories: number) => {
   return response.data;
 };
 
+export const fetchEstimatedDays = async (data: EstimatedDayRequest) => {
+  console.log(data);
+  const response = await axios.post<EstimateDayResponse>(
+    "https://746x7jtblf.execute-api.us-east-1.amazonaws.com/dev/estimate",
+    data
+  );
+  return response.data;
+};
+
 export const sendMealPLan = async (mealPlan: SendMealPlanRequest) => {
   const response = await axios.post<any>(
     `https://9w9hrve1k6.execute-api.us-east-1.amazonaws.com/PDFGen/product`,
@@ -41,7 +52,8 @@ export const sendMealPLan = async (mealPlan: SendMealPlanRequest) => {
 export async function createMealPlan(
   userId: string,
   title: string,
-  plan: object | undefined
+  plan: object | undefined,
+  calories: number
 ) {
   try {
     const { data, error } = await supabase
@@ -50,13 +62,16 @@ export async function createMealPlan(
         title: title,
         user_id: userId,
         plans: plan,
+        calories: calories,
       })
       .select()
       .single();
 
     if (error) {
-      alert(error);
+      toast.error("Failed to add meal");
+      console.log(error);
     }
+    toast.error("Meal plan saved");
     return data;
   } catch (error) {
     toast.error("Failed to add meal");

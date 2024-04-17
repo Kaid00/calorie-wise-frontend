@@ -27,9 +27,14 @@ function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
 
   const session = useSupabaseSession();
 
-  const saveMealPlan = async () => {
+  const saveMealPlan = async (calories: number) => {
     setIsSavingPLan(true);
-    const mealPlan = createMealPlan(session?.user?.id, target, data?.meals);
+    const mealPlan = createMealPlan(
+      session?.user?.id,
+      target,
+      data?.meals,
+      calories
+    );
     console.log(mealPlan);
     setIsSavingPLan(false);
     navigate();
@@ -55,7 +60,7 @@ function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
             >
               <div className="mx-auto rounded-full">
                 <img
-                  className="w-full "
+                  className=" w-[300px]"
                   src={`https://img.spoonacular.com/recipes/${meal.id}-556x370.jpg`}
                 />
               </div>
@@ -97,7 +102,7 @@ function MealPlan({ calories, target, navigate, sendToEmail }: MealPlanProps) {
             <Button
               className="rounded-full  py-3 font-semibold px-6 shadow-lg bg-orangeRoughy hover:bg-orange-700 text-white  disabled:bg-gray-600 disabled:cursor-not-allowed"
               disabled={isSavingPLan}
-              onClick={saveMealPlan}
+              onClick={() => saveMealPlan(data?.nutrients?.calories)}
             >
               {isSavingPLan ? "Saving..." : "Save Meal plan"}
             </Button>
