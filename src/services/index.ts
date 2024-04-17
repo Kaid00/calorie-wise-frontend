@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const apiKey = import.meta.env.VITE_API_KEY;
+const apiKey =  "4d0ae129c9msh83a023f8bcf40c6p1156bfjsneb131d0539aa" //import.meta.env.VITE_API_KEY;
 const headers = {
   "X-RapidAPI-Key": apiKey,
   "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
