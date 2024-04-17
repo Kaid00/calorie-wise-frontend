@@ -52,7 +52,7 @@ function DietPlan() {
         onSuccess: (data) => {
           console.log(data?.estimated_days);
           toast.info(
-            `It will take you ${data?.estimated_days} to reach your target goal following this meal plan`
+            `It will take you ${data?.estimated_days} days to reach your target goal following this meal plan`
           );
         },
         onError: (error: any) => {
