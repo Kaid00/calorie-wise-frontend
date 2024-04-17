@@ -44,6 +44,10 @@ function DietPlan() {
                 <div className="flex justify-center items-center space-x-6">
                   {mealPLan.plans.map((plan: any, index: number) => (
                     <div key={index} className="text-sm w-[300px]">
+                      <img
+                        className="w-[200px]  mx-auto  object-cover"
+                        src={`https://img.spoonacular.com/recipes/${plan.id}-556x370.jpg`}
+                      />
                       <p className="font-semibold text-chaletGreen">
                         {plan?.title}
                       </p>
