@@ -53,7 +53,7 @@ export default function Login({ closeMOdal }: LoginProps) {
       email: email,
       password: password,
       options: {
-        emailRedirectTo: "http://localhost:5173",
+        emailRedirectTo: "/",
       },
     });
     if (data.user) {
